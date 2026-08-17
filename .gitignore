@@ -1,0 +1,31 @@
+# dependencies
+node_modules
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# NOTE: convex/_generated is intentionally NOT ignored. Convex recommends
+# committing it so the project typechecks (locally and in CI) without
+# needing to run the Convex CLI first. It's created the first time you
+# run `npx convex dev` — see README, "Premiers pas".
+
+# testing / coverage
+coverage
+
+# env files (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
