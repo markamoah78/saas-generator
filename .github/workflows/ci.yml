@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # convex/_generated/ must exist and be committed for the next 4 steps
+      # to pass — it's created locally the first time you run
+      # `npx convex dev` (see README → "Premiers pas", step 3). This is
+      # Convex's own recommendation, precisely so CI doesn't need a live
+      # deployment or secrets just to lint/typecheck/build.
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+        env:
+          # Placeholder values so the build doesn't fail on a missing env
+          # var — nothing here needs to be a real, live deployment for a
+          # production *build* to succeed.
+          NEXT_PUBLIC_CONVEX_URL: https://placeholder.convex.cloud
+          NEXT_PUBLIC_CONVEX_SITE_URL: https://placeholder.convex.site
+          NEXT_PUBLIC_SITE_URL: http://localhost:3000
+          POLAR_ACCESS_TOKEN: placeholder
+          POLAR_PRO_MONTHLY_PRODUCT_ID: placeholder
